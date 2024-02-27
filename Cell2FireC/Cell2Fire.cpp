@@ -14,6 +14,7 @@ __maintainer__ = "Jaime Carrasco, Cristobal Pais, David Woodruff, David Palacios
 #include "WriteCSV.h"
 #include "ReadArgs.h"
 #include "Lightning.h"
+#include "DataGenerator.h"
 
 // Include libraries
 #include <omp.h>
@@ -33,6 +34,9 @@ __maintainer__ = "Jaime Carrasco, Cristobal Pais, David Woodruff, David Palacios
 #include <random>
 #include <algorithm> 
 #include <chrono>
+#include <memory>
+#include <typeinfo>
+
 
 using namespace std;
 
@@ -44,6 +48,7 @@ inputs * df;
 std::unordered_map<int, std::vector<float>> BBOFactors;
 std::unordered_map<int, std::vector<int>> HarvestedCells;   
 std::vector<int> NFTypesCells;
+std::vector<float> co2_v;
 
 /******************************************************************************
 																Utils
@@ -187,7 +192,7 @@ Cell2Fire::Cell2Fire(arguments _args) : CSVWeather(_args.InFolder + "Weather.csv
 	// Populate the df [nCells] objects
 	CSVParser.parseDF(df_ptr, DF,this->args_ptr, this->nCells); //iterates from the first element of df, using DF, args_ptr and the number of cells
 
-	// Initialize and populate relevant vectors 
+	// Initialize and populate relevant vectors
 	this->fTypeCells = std::vector<int> (this->nCells, 1); 
 	this->fTypeCells2 = std::vector<string> (this->nCells, "Burnable"); 
     this->statusCells = std::vector<int> (this->nCells, 0);
@@ -198,6 +203,7 @@ Cell2Fire::Cell2Fire(arguments _args) : CSVWeather(_args.InFolder + "Weather.csv
 	this->Intensities = std::vector<float> (this->nCells, 0);
 	this->RateOfSpreads = std::vector<float> (this->nCells, 0);
 	this->FlameLengths = std::vector<float> (this->nCells, 0);
+	this->Co2eq = 0;
 
 	this->ignProb = std::vector<float>(this->nCells, 1);
 	CSVParser.parsePROB(this->ignProb, DF, this->nCells);
@@ -220,12 +226,14 @@ Cell2Fire::Cell2Fire(arguments _args) : CSVWeather(_args.InFolder + "Weather.csv
 	
 	// Harvested cells
 	if(strcmp(this->args.HarvestPlan.c_str(), EM) != 0){
+
+		cout << "Harvest plan is non empty" << endl;
 		std::string sep = ",";
 		CSVReader CSVHPlan(this->args.HarvestPlan, sep);
 						
 		// Populate Ignitions vector 
 		std::vector<std::vector<std::string>> HarvestedDF  = CSVHPlan.getData();
-		//CSVHPlan.printData(HarvestedDF);
+		CSVHPlan.printData(HarvestedDF);
 		
 		// Cells
 		int HCellsP = HarvestedDF.size() - 1;
@@ -251,6 +259,7 @@ Cell2Fire::Cell2Fire(arguments _args) : CSVWeather(_args.InFolder + "Weather.csv
 	this->burningCells.clear();
 	this->burntCells.clear();
 	this->harvestCells.clear();
+	this->Co2eq = 0;
 	for (i=0; i < this->statusCells.size(); i++){
 		if(this->statusCells[i] < 3) this->availCells.insert (i+1);
 		else if (this->statusCells[i] == 4)  this->nonBurnableCells.insert(i+1);
@@ -496,6 +505,7 @@ void Cell2Fire::reset(int rnumber, double rnumber2, int simExt = 1){
 	this->done = false;
 	this->fire_period = vector<int>(this->args.TotalYears, 0);
 	this->sim = simExt;
+	this->Co2eq = 0;
 	// Initial status grid folder
 	if(this->args.OutputGrids || this->args.FinalGrid){
 		CSVWriter CSVFolder("","");
@@ -752,6 +762,52 @@ void Cell2Fire::reset(int rnumber, double rnumber2, int simExt = 1){
 	}
 }
 
+float Cell2Fire::get_co2eq(inputs* df_ptr){
+
+	float tfc = 0;
+	float sum=0;
+
+	if (this->args.Co2eq){
+	
+	std::unordered_map<std::string, double> fuel_load = {
+		{"C1", 1.575}, {"C2", 5.08}, {"C3", 5.115}, {"C4", 5.12},
+		{"C5", 5.12}, {"C6", 5.18}, {"C7", 3.55}, {"D1", 1.5},
+		{"M1", 5.08}, {"M2", 5.08}, {"M3", 5.08}, {"M4", 5.08},
+		{"S1", 8.0}, {"S2", 16.0}, {"S3", 32.0}, {"O1a", 0.3}, {"O1b", 0.3}
+	};
+
+	// Definir las columnas
+	std::vector<std::string> fuelTypes = {"O1a", "O1b", "S1", "S2", "S3", "C1", "C2", "C3", "C4", "C5", "C6", "C7", "D1", "D2", "M1", "M2", "M3", "M4"};
+	std::vector<int> CO2 = {1613, 1613, 1613, 1613, 1613, 1569, 1569, 1569, 1569, 1569, 1569, 1569, 1569, 1569, 1569, 1569, 1569, 1569};
+	std::vector<double> CH4 = {2.3, 2.3, 2.3, 2.3, 2.3, 4.7, 4.7, 4.7, 4.7, 4.7, 4.7, 4.7, 4.7, 4.7, 4.7, 4.7, 4.7, 4.7};
+	std::vector<double> N2O = {0.21, 0.21, 0.21, 0.21, 0.21, 0.26, 0.26, 0.26, 0.26, 0.26, 0.26, 0.26, 0.26, 0.26, 0.26, 0.26, 0.26, 0.26};
+
+	std::unordered_map<std::string, double> CO2_map;
+	std::unordered_map<std::string, double> CH4_map;
+	std::unordered_map<std::string, double> N2O_map;
+
+	for (size_t i = 0; i < fuelTypes.size(); ++i) {
+		CO2_map[fuelTypes[i]] = CO2[i];
+		CH4_map[fuelTypes[i]] = CH4[i];
+		N2O_map[fuelTypes[i]] = N2O[i];
+		}
+
+	for (const auto& value : this->burntCells) {
+			std::string cell_ftype = df_ptr[value-1].fueltype;
+
+			//remove unprintable characters
+			cell_ftype.erase(std::remove(cell_ftype.begin(), cell_ftype.end(), ' '), cell_ftype.end());
+		
+			sum = 
+			//this->crownFraction[value-1]+
+			this->surfFraction[value];
+			
+			tfc += sum*(CO2_map[cell_ftype]+CH4_map[cell_ftype]*27.2+N2O_map[cell_ftype]*273)*(pow(10,-2));
+		}
+	}
+
+	return tfc;
+}
 
 //Ignition method (False then ignition)
 bool Cell2Fire::RunIgnition(std::default_random_engine generator, int ep){
@@ -964,7 +1020,7 @@ bool Cell2Fire::RunIgnition(std::default_random_engine generator, int ep){
 
 
 // Send messages 
-std::unordered_map<int, std::vector<int>> Cell2Fire::SendMessages(){
+	std::unordered_map<int, std::vector<int>> Cell2Fire::SendMessages(){
 	// Iterator
 	std::unordered_map<int, Cells>::iterator it;
 	
@@ -1299,13 +1355,19 @@ void Cell2Fire::Results(){
 	float BCells = this->burntCells.size();
 	float NBCells = this->nonBurnableCells.size();
 	float HCells = this->harvestCells.size();
+
 	
+
 	std::cout <<"\n----------------------------- Results -----------------------------" << std::endl;
 	std::cout << "Total Available Cells:    " << ACells << " - % of the Forest: " <<  ACells/nCells*100.0 << "%" << std::endl;
 	std::cout << "Total Burnt Cells:        " << BCells << " - % of the Forest: " <<  BCells/nCells*100.0 <<"%" << std::endl;
 	std::cout << "Total Non-Burnable Cells: " << NBCells << " - % of the Forest: " <<  NBCells/nCells*100.0 <<"%"<< std::endl;
 	std::cout << "Total Firebreak Cells: " << HCells << " - % of the Forest: " <<  HCells/nCells*100.0 <<"%"<< std::endl;
-
+	
+	if (this->args.Co2eq){
+	std::cout << "Total CO2-eq emited: " << this->Co2eq << " Ton" <<std::endl;
+	}
+	
 	// Final Grid 
 	if(this->args.FinalGrid){
 		CSVWriter CSVFolder("","");
@@ -1380,8 +1442,8 @@ void Cell2Fire::Results(){
 		CSVPloter.printASCII(this->rows, this->cols, this->xllcorner, this->yllcorner, this->cellSide, this->FlameLengths);
 	}
 
-	
-		// Intensity
+
+	// Intensity
 	if ((this->args.OutCrownConsumption) && (this->args.AllowCROS)) {
 		this->cfbFolder = this->args.OutFolder + "CrownFractionBurn"+separator();
 		std::string cfbName;
@@ -1425,7 +1487,12 @@ void Cell2Fire::Results(){
 		CSVWriter CSVPloter(crownName, " ");
 		//CSVPloter.printCrownAscii(this->rows, this->cols, this->xllcorner, this->yllcorner, this->cellSide, this->crownMetrics, statusCells2); /OLD VERSION
 		CSVPloter.printASCIIInt(this->rows, this->cols, this->xllcorner, this->yllcorner, this->cellSide, this->crownState);
-	}	
+	}
+
+	if (this->Co2eq){
+
+		co2_v.push_back(this->Co2eq);
+	}
 }
 
 
@@ -1497,11 +1564,15 @@ void Cell2Fire::Step(std::default_random_engine generator, int ep){
 	 // One step (one fire period, ignition - if needed -, sending messages and receiving them - if needed)
 	 // For completeness: just in case user runs it longer than the horizon (should not happen)
 	if (this->year > this->args.TotalYears){
+
+		this->Co2eq = this->get_co2eq(df_ptr);
+
 		if (this->args.verbose){
 			printf("\nYear is greater than the Horizon, no more steps");
 		}
 		this->done = true;
 		// Print-out results to folder
+	
 		if (this->args.verbose) this->Results();        
 		
 		//Next Sim
@@ -1535,6 +1606,7 @@ void Cell2Fire::Step(std::default_random_engine generator, int ep){
 				// If more than planning horizon, next sim
 				if (this->year > this->args.TotalYears) {
 					// Print-out results to folder
+					this->Co2eq = this->get_co2eq(df_ptr);
 					this->Results();
 
 					// Next Sim if max year
@@ -1591,6 +1663,7 @@ void Cell2Fire::Step(std::default_random_engine generator, int ep){
 	if (this->year > this->args.TotalYears){
 		//printf("\n\nEntra a year mayor al total...\n\n");
 		// Print-out results to folder
+		this->Co2eq = this->get_co2eq(df_ptr);
 		this->Results();
 
 		// Next Sim if max year
@@ -1604,6 +1677,7 @@ void Cell2Fire::Step(std::default_random_engine generator, int ep){
 		this->done = true;
 		
 		// Print-out results to folder
+		this->Co2eq = this->get_co2eq(df_ptr);
 		this->Results();        
 		
 		// Next Sim if max year
@@ -1622,6 +1696,15 @@ void Cell2Fire::Step(std::default_random_engine generator, int ep){
 			WtFile.printWeather(WeatherHistory);
 		}
 	}
+
+	if (this->sim > args.TotalSims){
+		std::string filename = "emissions.csv";
+		CSVWriter co2eqFolder("", "");
+		this->co2eqFolder = this->args.OutFolder + "Co2eq"+separator() ;
+		co2eqFolder.MakeDir(this->co2eqFolder);
+		CSVWriter co2File(this->co2eqFolder + filename);
+		co2File.printCO2(co2_v);
+    }
 		
 	// Print current status
 	if (!this->done && this->args.verbose){
@@ -1654,18 +1737,13 @@ std::vector<float> Cell2Fire::getFireProgressMatrix(){
 }
 
 
-
-
-
-
-
-
 /******************************************************************************
 
 																Main Program	
 
 *******************************************************************************/
 int main(int argc, char* argv[]) {
+	
 	// Read Arguments
 	std::cout << "------ Command line values ------\n";
 	arguments args;
@@ -1689,6 +1767,9 @@ int main(int argc, char* argv[]) {
 	//std::uniform_int_distribution<int> udistributionIgnition(1, Forest.nCells);		// Get random ignition point
 
 	// Episodes
+
+	GenDataFile(args.InFolder,args.Simulator);
+
 	int ep = 0;
 	int tstep = 0;
 	int stop = 0;
@@ -1699,6 +1780,7 @@ int main(int argc, char* argv[]) {
 	int TID = 0;
 
 	
+
 	Cell2Fire Forest2(args); //generate Forest object
 	std::vector<Cell2Fire> Forests(num_threads, Forest2);
 

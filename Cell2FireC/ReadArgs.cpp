@@ -93,6 +93,7 @@ void parseArgs(int argc, char* argv[], arguments* args_ptr)
 	bool out_stats = false;
 	bool bbo_tuning = false;
 	bool allow_cros = false;
+	bool co2eq = false;
 
 	//--out-messages
 	if (cmdOptionExists(argv, argv + argc, "--output-messages")) {
@@ -192,17 +193,23 @@ void parseArgs(int argc, char* argv[], arguments* args_ptr)
 		printf("CrownROS: %d \n", allow_cros);
 	}
 
+	//--co2
+	if (cmdOptionExists(argv, argv + argc, "--co2eq")) {
+		co2eq = true;
+		printf("Co2-eq: %d \n", co2eq);
+	}
+
 
 	// Floats and ints
 	// defaults
 	int dsim_years = 1;
 	int dnsims = 1;
 	int dweather_period_len = 60;
-	int dmax_fire_periods = 10000000;
+	int dmax_fire_periods = 1000;
 	int dseed = 123;
 	int diradius = 0;
 	int dnthreads = 1;
-	int dfmc=80;
+	int dfmc=100;
 	int dscen=3;
 	float dROS_Threshold= 0.1;
 	float dHFI_Threshold= 0.1;
@@ -495,12 +502,15 @@ void parseArgs(int argc, char* argv[], arguments* args_ptr)
 	args_ptr->PromTuned = prom_tuned;
 	args_ptr->Stats = out_stats;   
 	args_ptr->BBOTuning = bbo_tuning;
-	args_ptr->AllowCROS = allow_cros;	
+	args_ptr->AllowCROS = allow_cros;
+	args_ptr->Co2eq = co2eq;
 	
 }
 
 
 void printArgs(arguments args){
+
+	/*
 	std::cout << "Simulator: "<<args.Simulator<<std::endl;
 	std::cout << "InFolder: " << args.InFolder << std::endl; 
 	std::cout << "OutFolder: " << args.OutFolder << std::endl; 
@@ -516,6 +526,39 @@ void printArgs(arguments args){
 	std::cout << "OutCrownConsumption: " << args.OutCrownConsumption << std::endl;
 	std::cout << "OutSurfConsumption: " << args.OutSurfConsumption << std::endl;
 	std::cout << "HarvestPlan: " << args.HarvestPlan << std::endl; 
+	std::cout << "TotalYears: " << args.TotalYears << std::endl; 
+	std::cout << "TotalSims: " << args.TotalSims << std::endl; 
+	std::cout << "FirePeriodLen: " << args.FirePeriodLen << std::endl; 
+	std::cout << "Ignitions: " << args.Ignitions << std::endl; 
+	std::cout << "IgnitionRad: " << args.IgnitionRadius << std::endl; 
+	std::cout << "OutputGrid: " << args.OutputGrids << std::endl; 
+	std::cout << "FinalGrid: " << args.FinalGrid << std::endl; 
+	std::cout << "PromTuned: " << args.PromTuned << std::endl; 
+	std::cout << "BBOTuning: " << args.BBOTuning << std::endl; 
+	std::cout << "Statistics: " << args.Stats << std::endl; 
+	std::cout << "noOutput: " << args.NoOutput << std::endl; 
+	std::cout << "verbose: " << args.verbose << std::endl; 
+	std::cout << "seed: " << args.seed << std::endl; 
+	std::cout << "nthreads: " << args.nthreads << std::endl;
+	*/
+
+	std::cout << "Simulator: "<<args.Simulator<<std::endl;
+	std::cout << "InFolder: " << args.InFolder << std::endl; 
+	std::cout << "OutFolder: " << args.OutFolder << std::endl; 
+	std::cout << "WeatherOpt: " << args.WeatherOpt << std::endl;
+	std::cout << "FirebreakCells: " << args.HarvestPlan << std::endl;
+	std::cout << "NWeatherFiles: " << args.NWeatherFiles << std::endl;	
+	std::cout << "MinutesPerWP: " << args.MinutesPerWP << std::endl; 
+	std::cout << "MaxFirePeriods: " << args.MaxFirePeriods << std::endl; 
+	std::cout << "Messages: " << args.OutMessages << std::endl;
+	std::cout << "OutFlameLength: " << args.OutFl << std::endl;
+	std::cout << "OutIntensity: " << args.OutIntensity << std::endl;
+	std::cout << "OutROS: " << args.OutRos << std::endl;
+	std::cout << "OutCrown: " << args.OutCrown << std::endl;
+	std::cout << "OutCrownConsumption: " << args.OutCrownConsumption << std::endl;
+	std::cout << "OutSurfConsumption: " << args.OutSurfConsumption << std::endl;
+	std::cout << "Co2-eq: " << args.Co2eq << std::endl;
+	 
 	std::cout << "TotalYears: " << args.TotalYears << std::endl; 
 	std::cout << "TotalSims: " << args.TotalSims << std::endl; 
 	std::cout << "FirePeriodLen: " << args.FirePeriodLen << std::endl; 

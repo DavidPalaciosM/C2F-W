@@ -27,7 +27,7 @@ CSVReader::CSVReader(std::string filename, std::string delm){
 */
 std::vector<std::vector<std::string>> CSVReader::getData() {
 	std::ifstream file(this->fileName);
-	std::vector<std::vector<std::string> > dataList;
+	std::vector<std::vector<std::string>> dataList;
 	std::string line = "";
 	// Iterate through each line and split the content using delimeter
 	if (this->fileName.substr(this->fileName.find_last_of(".") + 1) == "asc") {

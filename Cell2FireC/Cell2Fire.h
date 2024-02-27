@@ -10,6 +10,7 @@
 #include "WriteCSV.h"
 #include "ReadArgs.h"
 #include "Lightning.h"
+#include "DataGenerator.h"
 
 // Include libraries
 #include <stdio.h>
@@ -25,6 +26,7 @@
 #include <string.h>
 #include <random>
 #include <algorithm> 
+#include <memory>
 
 using namespace std;
 
@@ -68,6 +70,7 @@ class Cell2Fire {
 		 double areaCells;
 		 double perimeterCells;
 		 double ROSRV;
+		 float Co2eq;
 			
 		// Strings	
 		 string gridFolder;
@@ -79,6 +82,7 @@ class Cell2Fire {
 		 string cfbFolder;
 		 string flFolder;
 		 string historyFolder;
+		 string co2eqFolder;
 	
 		 // Vectors
 		 std::vector<int> fire_period;
@@ -103,6 +107,7 @@ class Cell2Fire {
 		 std::vector<float>RateOfSpreads;
 		 std::vector<float>FlameLengths;
 		 std::vector<std::vector<int>> IgnitionSets;
+		 std::vector<float>co2_v;
 
 		 // Sets
 		 std::unordered_set<int> availCells;				
@@ -128,6 +133,7 @@ class Cell2Fire {
 		void updateWeather();
 		void Step(std::default_random_engine generator, int ep);
 		void InitHarvested();
+		float get_co2eq(inputs* df_ptr);
 		
 		// Utils
 		std::vector<float> getROSMatrix();

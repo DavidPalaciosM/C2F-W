@@ -482,7 +482,8 @@ def main(argv=None):
     # print("args:", args)
 
     # Check if we need to generate DataC.csv
-    generateDataC(args)
+    # Now it is generated on DataGenerator.cpp
+    #generateDataC(args)
 
     # C++ init and run
     run(args)

@@ -7,9 +7,9 @@ CFLAGS = -std=c++14 -O3 -I /opt/homebrew/include -I /opt/homebrew/include/eigen3
 LIBS = -m64 -fPIC -fno-strict-aliasing -fexceptions -fopenmp -DNDEBUG -DIL_STD -lm -lpthread -ldl
 TARGETS = Cell2Fire
 all:	$(TARGETS)
-Cell2Fire: Cell2Fire.o Cells.o FuelModelSpain.o FuelModelKitral.o FuelModelFBP.o Spotting.o ReadCSV.o ReadArgs.o Lightning.o WriteCSV.o Ellipse.o
-	$(CC) -o $@ $(LIBS) Cell2Fire.o Cells.o FuelModelSpain.o FuelModelKitral.o FuelModelFBP.o Spotting.o ReadCSV.o ReadArgs.o Lightning.o WriteCSV.o Ellipse.o
-Cell2Fire.o: Cell2Fire.cpp Cells.o FuelModelSpain.o FuelModelKitral.o FuelModelFBP.o Spotting.o ReadCSV.o ReadArgs.o WriteCSV.o
+Cell2Fire: Cell2Fire.o Cells.o FuelModelSpain.o FuelModelKitral.o FuelModelFBP.o Spotting.o ReadCSV.o ReadArgs.o Lightning.o WriteCSV.o Ellipse.o DataGenerator.o
+	$(CC) -o $@ $(LIBS) Cell2Fire.o Cells.o FuelModelSpain.o FuelModelKitral.o FuelModelFBP.o Spotting.o ReadCSV.o ReadArgs.o Lightning.o WriteCSV.o Ellipse.o DataGenerator.o
+Cell2Fire.o: Cell2Fire.cpp Cells.o FuelModelSpain.o FuelModelKitral.o FuelModelFBP.o Spotting.o ReadCSV.o ReadArgs.o WriteCSV.o DataGenerator.o
 	$(CC) -c $(CFLAGS) Cell2Fire.cpp
 Spotting.o: Spotting.cpp Spotting.h Cells.h
 	$(CC) -c $(CFLAGS) Spotting.cpp
@@ -32,6 +32,8 @@ FuelModelSpain.o: FuelModelSpain.cpp FuelModelSpain.h Cells.h
 FuelModelKitral.o: FuelModelKitral.cpp FuelModelKitral.h Cells.h
 	$(CC) -c $(LIBS) $(CFLAGS) FuelModelKitral.cpp 
 FuelModelFBP.o: FuelModelFBP.cpp FuelModelFBP.h Cells.h
-	$(CC) -c $(LIBS) $(CFLAGS) FuelModelFBP.cpp 
+	$(CC) -c $(LIBS) $(CFLAGS) FuelModelFBP.cpp
+DataGenerator.o: DataGenerator.cpp DataGenerator.h
+	$(CC) -c $(LIBS) $(CFLAGS) DataGenerator.cpp
 clean:
-	rm -f Lightning.o ReadArgs.o ReadCSV.o Cell2Fire.o Cells.o Cell2Fire Spotting.o WriteCSV.o Ellipse.o FuelModelFBP.o FuelModelKitral.o FuelModelSpain.o *.gch
+	rm -f Lightning.o ReadArgs.o ReadCSV.o Cell2Fire.o Cells.o Cell2Fire Spotting.o WriteCSV.o Ellipse.o FuelModelFBP.o FuelModelKitral.o FuelModelSpain.o DataGenerator.o *.gch
