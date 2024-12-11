@@ -28,6 +28,11 @@ foreach ($format in "asc", "tif") {
     
         $command = "Cell2Fire.exe --input-instance-folder model/$model-$format --output-folder $outputDir --nsims 113 --output-messages --grids --out-ros --out-intensity --sim $simCode --seed 123 $additionalArgs"
         Start-Process -FilePath "pwsh" -ArgumentList "-Command $command" -RedirectStandardOutput "$outputDir/log.txt" -NoNewWindow -Wait
+
+	$firstLine = (Get-Content "$outputDir/log.txt" -TotalCount 1) -replace '^version: .*', 'version: v0.0.1'
+	$restOfFile = Get-Content "$outputDir/log.txt" | Select-Object -Skip 1
+	$combinedContent = @($firstLine) + $restOfFile
+	$combinedContent | Set-Content "$outputDir/log.txt"
     }
 }
 

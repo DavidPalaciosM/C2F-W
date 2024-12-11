@@ -38,8 +38,10 @@ bool cmdOptionExists(char** begin, char** end, const std::string& option)
 void parseArgs(int argc, char* argv[], arguments* args_ptr)
 {
 	// Help
-	if (cmdOptionExists(argv, argv + argc, "-h")) {
-		printf("-------------------------------------------\n         Help manual!!! \n-------------------------------------------\n");
+	if (cmdOptionExists(argv, argv + argc, "-h") || cmdOptionExists(argv, argv + argc, "--help")) {
+		printf("Help at https://github.com/fire2a/docs\n");
+		printf("Try graphically building the arguments using the QGIS -processing algo.- plugin\n");
+		exit(0);
 	}
 
 	// Empty default
@@ -313,7 +315,7 @@ void parseArgs(int argc, char* argv[], arguments* args_ptr)
 	//--fmc
 	char * input_fmc = getCmdOption(argv, argv + argc, "--fmc");
     if (input_fmc){
-        printf("fmc: %s \n", input_fmc);
+        printf("FoliarMoistureContent: %s \n", input_fmc);
 		args_ptr->FMC = std::stoi (input_fmc ,&sz);  
     }
 	else args_ptr->FMC = dfmc; 
@@ -321,7 +323,7 @@ void parseArgs(int argc, char* argv[], arguments* args_ptr)
 		//--scenario
 	char * input_scenario = getCmdOption(argv, argv + argc, "--scenario");
     if (input_scenario){
-        printf("scenario: %s \n", input_scenario);
+        printf("LiveAndDeadFuelMoistureContentScenario: %s \n", input_scenario);
 		args_ptr->scenario = std::stoi (input_scenario ,&sz);  
     }
 	else args_ptr->scenario = dscen; 

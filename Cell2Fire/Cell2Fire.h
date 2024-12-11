@@ -30,6 +30,8 @@
 
 using namespace std;
 
+std::string c2fw_version = "v0.0.1";
+
 class Cell2Fire {
 	// DFs 
 	private:

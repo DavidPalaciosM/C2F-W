@@ -1697,6 +1697,8 @@ std::vector<float> Cell2Fire::getFireProgressMatrix(){
 
 *******************************************************************************/
 int main(int argc, char* argv[]) {
+
+	printf("version: %s\n", c2fw_version.c_str());
 	
 	// Read Arguments
 	std::cout << "------ Command line values ------\n";

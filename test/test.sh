@@ -6,7 +6,8 @@ rm -rf target_results
 unzip -q target_results.zip
 
 # recreate targets with tests
-# rm -rf target_results.zip
+# cd test
+# rm -rf test_results target_results target_results.zip
 # execute the for loop
 # mv test_results target_results
 # zip -r target_results.zip target_results
@@ -36,6 +37,7 @@ for format in asc tif; do
             sim_code="K"
         fi
         Cell2Fire$1 --input-instance-folder model/$model-$format --output-folder $output_folder --nsims 113 --output-messages --grids --out-ros --out-intensity --sim ${sim_code} --seed 123 --ignitionsLog $additional_args > test_results/$model-$format/log.txt
+        sed -i "1 s/version: .*/version: v0.0.1/" test_results/$model-$format/log.txt
     done
 done
 set +x # disable debug tracing

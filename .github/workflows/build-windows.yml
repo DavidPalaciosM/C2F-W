@@ -118,6 +118,17 @@ jobs:
         # Write-Host "Listing all files in installed\x64-windows:"
         # Get-ChildItem -Recurse installed\x64-windows | ForEach-Object { $_.FullName }
 
+    - name: Set Version
+      run: |
+        if [[ "${{ github.event_name }}" == "pull_request" || "${{ github.event_name }}" == "workflow_dispatch" ]]; then
+          version=${{ github.sha }}
+        else
+          version=${{ github.ref_name }}
+        fi
+        echo "version: ${version}"
+        sed -i "s/c2fw_version.*/c2fw_version = \"${version}\";/" Cell2Fire/Cell2Fire.h
+      shell: bash
+
     - name: Setup MSBuild
       uses: microsoft/setup-msbuild@v2
 
