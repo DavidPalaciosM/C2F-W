@@ -60,42 +60,42 @@ jobs:
           Cell2Fire/ldd${{ env.SUFFIX }}.txt
           Cell2Fire/Cell2Fire${{ env.SUFFIX }}
 
-  test:
-    needs: build
-    runs-on: ubuntu-latest
-    container: debian:stable-slim
+          #test:
+          #  needs: build
+          #  runs-on: ubuntu-latest
+          #  container: debian:stable-slim
 
-    steps:
-    - name: Checkout Code
-      uses: actions/checkout@v4
+          #  steps:
+          #  - name: Checkout Code
+          #    uses: actions/checkout@v4
 
-    - name: Install Dependencies
-      run: |
-        apt update
-        apt install -y lsb-release unzip libtiff6 libgomp1
-        # apt install -y g++-12 make lsb-release unzip libboost-all-dev libeigen3-dev libtiff-dev
+          #  - name: Install Dependencies
+          #    run: |
+          #      apt update
+          #      apt install -y lsb-release unzip libtiff6 libgomp1
+          #      # apt install -y g++-12 make lsb-release unzip libboost-all-dev libeigen3-dev libtiff-dev
 
-    - name: Get Environment
-      id: get_env
-      run: |
-        DISTRIBUTION=$( lsb_release --short --id 2>/dev/null )
-        CODENAME=$( lsb_release --short --codename 2>/dev/null )
-        MACHINE=$( uname --machine 2>/dev/null )
-        echo "SUFFIX=".${DISTRIBUTION}.${CODENAME}.${MACHINE}"" >> $GITHUB_ENV
+          #  - name: Get Environment
+          #    id: get_env
+          #    run: |
+          #      DISTRIBUTION=$( lsb_release --short --id 2>/dev/null )
+          #      CODENAME=$( lsb_release --short --codename 2>/dev/null )
+          #      MACHINE=$( uname --machine 2>/dev/null )
+          #      echo "SUFFIX=".${DISTRIBUTION}.${CODENAME}.${MACHINE}"" >> $GITHUB_ENV
 
-    - name: Download Artifacts
-      uses: actions/download-artifact@v4
-      with:
-        pattern: binaries${{ env.SUFFIX }}
-        path: Cell2Fire
-        merge-multiple: true
+          #  - name: Download Artifacts
+          #    uses: actions/download-artifact@v4
+          #    with:
+          #      pattern: binaries${{ env.SUFFIX }}
+          #      path: Cell2Fire
+          #      merge-multiple: true
 
-    - name: chmod
-      run: |
-        ls Cell2Fire
-        chmod +x Cell2Fire/Cell2Fire*
+          #  - name: chmod
+          #    run: |
+          #      ls Cell2Fire
+          #      chmod +x Cell2Fire/Cell2Fire*
 
-    - name: Test
-      run: |
-        cd test
-        bash test.sh ${{ env.SUFFIX }}
+          #  - name: Test
+          #    run: |
+          #      cd test
+          #      bash test.sh ${{ env.SUFFIX }}

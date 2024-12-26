@@ -29,12 +29,15 @@ inline char separator()
 // Reads fbp_lookup_table.csv and creates dictionaries for the fuel types and cells' ColorsDict
 std::tuple<std::unordered_map<std::string, std::string>, std::unordered_map<std::string, std::tuple<float, float, float, float>>> Dictionary(const std::string& filename) {
 
+    
     std::unordered_map<std::string, std::string> FBPDict;
     std::unordered_map<std::string, std::tuple<float, float, float, float>> ColorsDict;
 
     int aux = 1;
     std::ifstream file(filename);
     std::string line;
+
+    
 
     // Read file and save ColorsDict and ftypes dictionaries
     while (std::getline(file, line)) {
@@ -61,6 +64,8 @@ std::tuple<std::unordered_map<std::string, std::string>, std::unordered_map<std:
                 line.replace(noPos, 2, "NF");
                 noPos = line.find("No");
             }
+
+            
 
             // Split the line into tokens
             std::istringstream ss(line);
@@ -90,7 +95,11 @@ std::tuple<std::unordered_map<std::string, std::string>, std::unordered_map<std:
             aux += 1;
         }
 
+    
+
     }
+
+    
 
     return std::make_tuple(FBPDict, ColorsDict);
 }
@@ -703,10 +712,13 @@ void GenDataFile(const std::string& InFolder, const std::string& Simulator) {
         lookupTable = InFolder + separator() + "spain_lookup_table.csv";
     } else if (Simulator == "C") {
         lookupTable = InFolder + separator() + "fbp_lookup_table.csv";
+    } else if (Simulator == "P") {
+        lookupTable = InFolder + separator() + "portugal_lookup_table.csv";
     } else { 
 	std::cerr << "Error: Simulator not recognized:" << Simulator  << std::endl;
 	exit(1);
     }
+
 
     // Check if the lookup table exists
     if (!fileExists(lookupTable)) {
@@ -717,6 +729,7 @@ void GenDataFile(const std::string& InFolder, const std::string& Simulator) {
     // Call Dictionary function to read lookup table
     std::tie(FBPDict, ColorsDict) = Dictionary(lookupTable);
 
+
     // Call ForestGrid function
     //If fuels.tif exists, then .tif's are used, otherwise .asc
     std::string extension;
@@ -725,6 +738,9 @@ void GenDataFile(const std::string& InFolder, const std::string& Simulator) {
     } else {
         extension = ".asc";
     }
+
+    
+
     std::cout << "Using " << extension << '\n';
     // Call ForestGrid function
     std::string FGrid = InFolder + "fuels" + extension;
@@ -737,6 +753,7 @@ void GenDataFile(const std::string& InFolder, const std::string& Simulator) {
     } else{
         std::tie(GFuelTypeN, GFuelType, FBPDicts, Cols, CellSide) = ForestGrid(FGrid, FBPDict);
     }
+
 
     // FOR DEBUGING ----------------------------------------------------------
     /*

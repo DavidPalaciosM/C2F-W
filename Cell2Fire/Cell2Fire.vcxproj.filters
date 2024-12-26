@@ -30,6 +30,9 @@
     <ClCompile Include="FuelModelSpain.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="FuelModelPortugal.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="Lightning.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -69,6 +72,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="FuelModelSpain.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="FuelModelPortugal.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Lightning.h">

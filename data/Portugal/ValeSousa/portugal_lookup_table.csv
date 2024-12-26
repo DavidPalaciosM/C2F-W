@@ -1,0 +1,20 @@
+grid_value,export_value,descriptive_name,fuel_type, r, g, b, h, s, l
+214,214,Eucalypt shrubs 4 to 6 ton,GR1,209,255,115,57,255,185
+212,212,Hardwoods shrubs 2 to 5,GR2,209,255,115,57,255,185
+213,213,Pine trees w shrubs 4 to 7 ,GR3,34,102,51,95,128,68
+211,211,Conifers with short leave with 4 to 6 tonha of shrubs,GR4,131,199,149,96,96,165
+221,221,hardwoods with shrubs 8 to 17,GR5,112,168,0,57,255,84
+222,222,holm and cork oak shrubs 7 to 17,GR6,223,184,230,206,122,207
+227,227,Eucalypt shrubs 9 to 18 ton,GR7,172,102,237,192,201,170
+223,223,Young stands of eucalyptus,GR8,112,12,242,188,231,127
+224,224,Other forest stands with shrubs 6 to 9 ton of shrubs,GS1,196,189,151,35,70,174
+226,226,Other forest stands with shrubs 2 to 5 ton of shrubs,GS2,137,112,68,27,86,103
+225,225,Pines with shrubs 8 to 18 ton of shrub load,GS3,196,189,151,35,70,174
+234,234,Tall grass (>0.5m) ,GS4,251,190,185,3,227,218
+233,233,Low grass (<0.5m) ,SH2,247,104,161,-272,229,176
+237,237,High shrubs (>1m) load 12 to 27 ton,SH3,174,1,126,-285,252,88
+236,236,Low shrubs (<1m) load 7 to 14 ton,SH4,255,255,190,42,255,223
+235,235,Young shrubs (max 3 years),SH5,230,230,0,42,255,115
+232,232,High shrubs (>1m) load 10 to 19 ton,SH6,255,211,127,28,255,191
+231,231,Low shrubs (<1m) load 4 to 8 ton,SH7,255,170,0,28,255,128
+0,0,Not Available,Non-fuel,255,255,255,170,0,255

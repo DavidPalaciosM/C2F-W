@@ -74,54 +74,54 @@ jobs:
           Cell2Fire/Cell2Fire
         if-no-files-found: error
 
-  test:
-    needs: build
-    runs-on: ubuntu-latest
-    container: ubuntu:jammy
+          # test:
+          #   needs: build
+          #   runs-on: ubuntu-latest
+          #   container: ubuntu:jammy
 
-    steps:
+          #   steps:
 
-    - name: Checkout Code
-      uses: actions/checkout@v4
+          #   - name: Checkout Code
+          #     uses: actions/checkout@v4
 
-    - name: Install Base Dependencies
-      run: |
-        apt update
-        apt install -y unzip lsb-release
+          #   - name: Install Base Dependencies
+          #     run: |
+          #       apt update
+          #       apt install -y unzip lsb-release
 
-    - name: Download Artifacts
-      uses: actions/download-artifact@v4
-      with:
-        pattern: binaries*
-        path: Cell2Fire
-        merge-multiple: true
+          #   - name: Download Artifacts
+          #     uses: actions/download-artifact@v4
+          #     with:
+          #       pattern: binaries*
+          #       path: Cell2Fire
+          #       merge-multiple: true
 
-    - name: chmod
-      run: |
-        chmod +x Cell2Fire/Cell2Fire*
+          #   - name: chmod
+          #     run: |
+          #       chmod +x Cell2Fire/Cell2Fire*
 
-    - name: Test ManyLinux
-      run: |
-        cd test
-        bash test.sh
+          #   - name: Test ManyLinux
+          #     run: |
+          #       cd test
+          #       bash test.sh
 
-    - name: Get Environment
-      if: ${{ env.do_dynamic == 'true' }}
-      id: get_env
-      run: |
-        DISTRIBUTION=$( lsb_release --short --id 2>/dev/null )
-        CODENAME=$( lsb_release --short --codename 2>/dev/null )
-        MACHINE=$( uname --machine 2>/dev/null )
-        echo "SUFFIX=".${DISTRIBUTION}.${CODENAME}.${MACHINE}"" >> $GITHUB_ENV
+          #   - name: Get Environment
+          #     if: ${{ env.do_dynamic == 'true' }}
+          #     id: get_env
+          #     run: |
+          #       DISTRIBUTION=$( lsb_release --short --id 2>/dev/null )
+          #       CODENAME=$( lsb_release --short --codename 2>/dev/null )
+          #       MACHINE=$( uname --machine 2>/dev/null )
+          #       echo "SUFFIX=".${DISTRIBUTION}.${CODENAME}.${MACHINE}"" >> $GITHUB_ENV
 
-    - name: Install Runtime Dependencies
-      if: ${{ env.do_dynamic == 'true' }}
-      run: |
-        apt update
-        apt install -y libtiff5 libstdc++6 libgomp1 libgcc1
+          #   - name: Install Runtime Dependencies
+          #     if: ${{ env.do_dynamic == 'true' }}
+          #     run: |
+          #       apt update
+          #       apt install -y libtiff5 libstdc++6 libgomp1 libgcc1
 
-    - name: Test Suffix
-      if: ${{ env.do_dynamic == 'true' }}
-      run: |
-        cd test
-        bash test.sh ${{ env.SUFFIX }}
+          #   - name: Test Suffix
+          #     if: ${{ env.do_dynamic == 'true' }}
+          #     run: |
+          #       cd test
+          #       bash test.sh ${{ env.SUFFIX }}

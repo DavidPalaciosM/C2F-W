@@ -130,6 +130,7 @@
     <ClCompile Include="FuelModelFBP.cpp" />
     <ClCompile Include="FuelModelKitral.cpp" />
     <ClCompile Include="FuelModelSpain.cpp" />
+    <ClCompile Include="FuelModelPortugal.cpp" />
     <ClCompile Include="Lightning.cpp" />
     <ClCompile Include="ReadArgs.cpp" />
     <ClCompile Include="ReadCSV.cpp" />
@@ -145,6 +146,7 @@
     <ClInclude Include="FuelModelFBP.h" />
     <ClInclude Include="FuelModelKitral.h" />
     <ClInclude Include="FuelModelSpain.h" />
+    <ClInclude Include="FuelModelPortugal.cpp" />
     <ClInclude Include="Lightning.h" />
     <ClInclude Include="ReadArgs.h" />
     <ClInclude Include="ReadCSV.h" />
