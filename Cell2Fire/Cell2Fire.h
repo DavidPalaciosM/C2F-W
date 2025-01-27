@@ -85,6 +85,7 @@ class Cell2Fire
     string crownFlameLengthFolder;
     string historyFolder;
     string ignitionsFolder;
+    string weathersFolder;
 
     // Vectors
     std::vector<int> fire_period;
