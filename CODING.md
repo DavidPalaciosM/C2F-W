@@ -26,3 +26,11 @@ let g:ale_fixers = {
 \   'cpp': ['clang-format'],
 \}
 ```
+# GIT practices
+
+Follow [naming conventions](https://github.com/naming-convention/naming-convention-guides/tree/master/git) when creating branches and commit messages.
+
+## Pull request rules
+1. All pull requests must be associated to a corresponding issue stating the reasons for it and the expected result
+2. Add a comment with an overview of the changes made
+3. One feature per pull request
