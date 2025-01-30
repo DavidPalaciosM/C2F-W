@@ -736,7 +736,7 @@ Cells::manageFire(int period,
                 surfFraction[nb] = metrics.sfc;
                 SurfaceFlameLengths[this->realId - 1] = mainstruct.fl;
                 SurfaceFlameLengths[nb - 1] = metrics.fl;
-                if ((args->AllowCROS) && (args->Simulator == "S"))
+                if ((args->AllowCROS) && (args->Simulator != "C"))
                 {
                     float comp_zero = 0;
                     MaxFlameLengths[this->realId - 1]

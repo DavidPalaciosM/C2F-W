@@ -32,6 +32,9 @@ float backfire_ros_k(main_outs* at, snd_outs* sec);
 // Flame length [m])
 float flame_length(inputs* data, main_outs* at);
 
+// Crown Flame length [m])
+float crown_flame_length_k(float intensity);
+
 // Angle of the flame w.r.t. horizontal surface (Putnam's)
 float angleFL(inputs* data, main_outs* at);
 
@@ -40,6 +43,9 @@ float flame_height(inputs* data, main_outs* at);
 
 // byram intensity
 float byram_intensity(inputs* data, main_outs* at);
+
+// crown byram intensity
+float crown_byram_intensity_k(main_outs* at, inputs* data);
 
 // Type of fire (Crown = 1, SROS = 0)
 bool fire_type(inputs* data, main_outs* atr, int FMC);
