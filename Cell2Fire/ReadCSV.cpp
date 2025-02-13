@@ -224,7 +224,6 @@ CSVReader::parseDF(inputs* df_ptr, std::vector<std::vector<std::string>>& DF, ar
     // Floats
     float cur, elev, ws, waz, saz, cbd, cbh, ccf, ps, lat, lon, ffmc, bui, gfl, tree_height;
 
-
     // Integers
     int nftype, FMC, jd, jd_min, pc, pdf, time, pattern;
 
@@ -272,12 +271,12 @@ CSVReader::parseDF(inputs* df_ptr, std::vector<std::vector<std::string>>& DF, ar
             cur = std::stof(DF[i][8], &sz);
 
         if (DF[i][9].compare("") == 0)
-            cbd = 0;
+            cbd = -999;
         else
             cbd = std::stof(DF[i][9], &sz);
 
         if (DF[i][10].compare("") == 0)
-            cbh = 0;
+            cbh = -999;
         else
             cbh = std::stof(DF[i][10], &sz);
 
@@ -357,7 +356,6 @@ CSVReader::parseDF(inputs* df_ptr, std::vector<std::vector<std::string>>& DF, ar
             tree_height = 0;
         else
             tree_height = std::stof(DF[i][24], &sz);
-
 
         // Set values
         strncpy(df_ptr->fueltype, faux, 4);
