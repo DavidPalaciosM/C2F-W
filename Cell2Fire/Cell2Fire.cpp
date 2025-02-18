@@ -2403,20 +2403,6 @@ Cell2Fire::Step(std::default_random_engine generator, int ep)
         this->sim += 1;
     }
 
-    if ((this->sim > args.TotalSims) && (args.WeatherOpt != "rows"))
-    {
-        this->counter_wt += 1;
-        if (this->counter_wt <= 1)
-        {
-            // Weather History Folder
-            std::string filename = "WeatherHistory.csv";
-            CSVWriter WtHistoryFolder("", "");
-            this->historyFolder = this->args.OutFolder + "WeatherHistory" + separator();
-            WtHistoryFolder.MakeDir(this->historyFolder);
-            CSVWriter WtFile(this->historyFolder + filename);
-            WtFile.printWeather(WeatherHistory);
-        }
-    }
     // Print current status
     if (!this->done && this->args.verbose)
     {
