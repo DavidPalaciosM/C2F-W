@@ -1,0 +1,9 @@
+<map id="Cell2Fire::GetMessages" name="Cell2Fire::GetMessages">
+<area shape="rect" id="Node000001" title="Processes incoming fire messages to determine the ignition and progression of fire in cells." alt="" coords="5,31,180,56"/>
+<area shape="rect" id="Node000002" href="$dc/d0a/classCell2Fire.html#a990b7d2ddcac2076870dbc2aa412162d" title="Initializes a cell within the simulation and adds it to the cell collection." alt="" coords="255,5,388,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="180,31,241,24,241,29,180,36"/>
+<area shape="rect" id="Node000003" href="$dc/d0a/classCell2Fire.html#ad80754c3229512c88f0346d813c6f632" title="Updates the weather conditions during the simulation based on specified criteria." alt="" coords="228,55,415,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="180,50,215,53,214,59,180,55"/>
+<area shape="rect" id="Node000004" href="$dc/d0a/classCell2Fire.html#af98cbe0fc95eb0b05955249f3eb03691" title="Outputs the current state of the forest grid to a CSV file." alt="" coords="463,55,619,80"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="415,65,449,65,449,70,415,70"/>
+</map>

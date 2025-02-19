@@ -1,0 +1,7 @@
+<map id="Cells::manageFire" name="Cells::manageFire">
+<area shape="rect" id="Node000001" title="Manage&#39;s the cell&#39;s response to being reached by fire." alt="" coords="5,5,144,31"/>
+<area shape="rect" id="Node000002" href="$d4/dcd/classCells.html#ae2f749c8ae30e05567a4e6e3bf05bf3d" title="Distributes the Rate of Spread (ROS) across the cell&#39;s neighbors based on fire direction and ellipse ..." alt="" coords="192,5,335,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="144,15,179,15,179,21,144,21"/>
+<area shape="rect" id="Node000003" href="$d4/dcd/classCells.html#af950037cf919ddf86233158174f76699" title="Calculates the radial distance for a given angle in an ellipse defined by its semi&#45;major and semi&#45;min..." alt="" coords="383,5,503,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="335,15,369,15,369,21,335,21"/>
+</map>

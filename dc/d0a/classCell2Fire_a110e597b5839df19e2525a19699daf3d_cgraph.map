@@ -1,0 +1,5 @@
+<map id="Cell2Fire::Results" name="Cell2Fire::Results">
+<area shape="rect" id="Node000001" title="Generates and outputs simulation results, including fire behavior metrics, final grid status,..." alt="" coords="5,5,140,31"/>
+<area shape="rect" id="Node000002" href="$dc/d0a/classCell2Fire.html#af98cbe0fc95eb0b05955249f3eb03691" title="Outputs the current state of the forest grid to a CSV file." alt="" coords="188,5,344,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="140,15,174,15,174,21,140,21"/>
+</map>

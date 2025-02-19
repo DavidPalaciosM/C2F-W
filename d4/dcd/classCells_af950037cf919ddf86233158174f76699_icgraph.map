@@ -1,0 +1,11 @@
+<map id="Cells::rhoTheta" name="Cells::rhoTheta">
+<area shape="rect" id="Node000001" title="Calculates the radial distance for a given angle in an ellipse defined by its semi&#45;major and semi&#45;min..." alt="" coords="411,31,531,56"/>
+<area shape="rect" id="Node000002" href="$d4/dcd/classCells.html#a6a948c89df2378f25a22823872914ec0" title=" " alt="" coords="232,5,351,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="397,36,351,29,352,24,398,30"/>
+<area shape="rect" id="Node000003" href="$d4/dcd/classCells.html#ae2f749c8ae30e05567a4e6e3bf05bf3d" title="Distributes the Rate of Spread (ROS) across the cell&#39;s neighbors based on fire direction and ellipse ..." alt="" coords="220,55,363,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="397,56,363,60,363,55,397,51"/>
+<area shape="rect" id="Node000004" href="$d4/dcd/classCells.html#a5b2bb9ec579bd5806e4ac9e5bad46d1f" title="Manage&#39;s the cell&#39;s response to being reached by fire." alt="" coords="19,29,158,55"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="206,59,158,53,159,48,207,54"/>
+<area shape="rect" id="Node000005" href="$d4/dcd/classCells.html#a20d450b1f32611d07767a92a6b58816a" title=" " alt="" coords="5,79,172,104"/>
+<area shape="poly" id="edge4_Node000003_Node000005" title=" " alt="" coords="206,80,173,84,172,79,206,75"/>
+</map>

@@ -1,0 +1,21 @@
+<map id="Cell2Fire::Step" name="Cell2Fire::Step">
+<area shape="rect" id="Node000001" title="Executes a single simulation step in the forest fire model." alt="" coords="5,81,121,107"/>
+<area shape="rect" id="Node000002" href="$dc/d0a/classCell2Fire.html#a31931e30982982168b82824efbb5b43a" title="Processes incoming fire messages to determine the ignition and progression of fire in cells." alt="" coords="174,56,349,81"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="121,84,160,79,161,84,122,89"/>
+<area shape="rect" id="Node000006" href="$dc/d0a/classCell2Fire.html#a110e597b5839df19e2525a19699daf3d" title="Generates and outputs simulation results, including fire behavior metrics, final grid status,..." alt="" coords="427,5,562,31"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="84,79,122,59,169,41,232,27,297,19,413,13,413,19,297,24,233,32,170,46,124,63,86,84"/>
+<area shape="rect" id="Node000007" href="$dc/d0a/classCell2Fire.html#aaed4b85f57d3c3122c5574d2b171da44" title="Simulates the ignition phase of the fire spread model for a single simulation year." alt="" coords="181,105,342,131"/>
+<area shape="poly" id="edge7_Node000001_Node000007" title=" " alt="" coords="122,98,167,104,167,109,121,104"/>
+<area shape="rect" id="Node000008" href="$dc/d0a/classCell2Fire.html#a29a171612a1380f11d58986c7d926f10" title="Message&#45;sending phase of the fire spread model, where burning cells propagate fire messages to neighb..." alt="" coords="169,155,353,180"/>
+<area shape="poly" id="edge11_Node000001_Node000008" title=" " alt="" coords="90,104,170,141,193,148,191,153,168,146,88,109"/>
+<area shape="rect" id="Node000003" href="$dc/d0a/classCell2Fire.html#a990b7d2ddcac2076870dbc2aa412162d" title="Initializes a cell within the simulation and adds it to the cell collection." alt="" coords="428,55,561,80"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="349,65,414,65,414,70,349,71"/>
+<area shape="rect" id="Node000004" href="$dc/d0a/classCell2Fire.html#ad80754c3229512c88f0346d813c6f632" title="Updates the weather conditions during the simulation based on specified criteria." alt="" coords="401,104,588,129"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="324,79,419,99,418,104,323,84"/>
+<area shape="rect" id="Node000005" href="$dc/d0a/classCell2Fire.html#af98cbe0fc95eb0b05955249f3eb03691" title="Outputs the current state of the forest grid to a CSV file." alt="" coords="636,104,792,129"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="589,114,622,114,622,119,589,119"/>
+<area shape="poly" id="edge6_Node000006_Node000005" title=" " alt="" coords="556,28,589,40,641,66,685,94,683,98,639,71,587,44,554,33"/>
+<area shape="poly" id="edge8_Node000007_Node000003" title=" " alt="" coords="320,103,422,80,423,86,321,108"/>
+<area shape="poly" id="edge10_Node000007_Node000004" title=" " alt="" coords="342,115,388,115,388,120,342,120"/>
+<area shape="poly" id="edge9_Node000007_Node000005" title=" " alt="" coords="323,128,402,139,495,145,588,139,649,130,649,135,588,145,495,150,401,145,322,133"/>
+</map>

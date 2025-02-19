@@ -1,0 +1,5 @@
+<map id="Cell2Fire::SendMessages" name="Cell2Fire::SendMessages">
+<area shape="rect" id="Node000001" title="Message&#45;sending phase of the fire spread model, where burning cells propagate fire messages to neighb..." alt="" coords="169,5,353,31"/>
+<area shape="rect" id="Node000002" href="$dc/d0a/classCell2Fire.html#a01ed2559f9d53e0ab5deb3cd83983c1a" title="Executes a single simulation step in the forest fire model." alt="" coords="5,5,121,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="156,21,122,21,122,15,156,15"/>
+</map>

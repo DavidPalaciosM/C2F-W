@@ -1,0 +1,7 @@
+<map id="Cells::manageFireBBO" name="Cells::manageFireBBO">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,5,172,31"/>
+<area shape="rect" id="Node000002" href="$d4/dcd/classCells.html#ae2f749c8ae30e05567a4e6e3bf05bf3d" title="Distributes the Rate of Spread (ROS) across the cell&#39;s neighbors based on fire direction and ellipse ..." alt="" coords="220,5,363,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="173,15,206,15,206,21,173,21"/>
+<area shape="rect" id="Node000003" href="$d4/dcd/classCells.html#af950037cf919ddf86233158174f76699" title="Calculates the radial distance for a given angle in an ellipse defined by its semi&#45;major and semi&#45;min..." alt="" coords="411,5,531,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="363,15,397,15,397,21,363,21"/>
+</map>

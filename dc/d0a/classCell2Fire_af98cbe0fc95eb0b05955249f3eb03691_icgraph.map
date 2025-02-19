@@ -1,0 +1,16 @@
+<map id="Cell2Fire::outputGrid" name="Cell2Fire::outputGrid">
+<area shape="rect" id="Node000001" title="Outputs the current state of the forest grid to a CSV file." alt="" coords="627,56,783,81"/>
+<area shape="rect" id="Node000002" href="$dc/d0a/classCell2Fire.html#a110e597b5839df19e2525a19699daf3d" title="Generates and outputs simulation results, including fire behavior metrics, final grid status,..." alt="" coords="418,5,553,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="635,55,540,33,542,28,636,50"/>
+<area shape="rect" id="Node000004" href="$dc/d0a/classCell2Fire.html#aaed4b85f57d3c3122c5574d2b171da44" title="Simulates the ignition phase of the fire spread model for a single simulation year." alt="" coords="176,57,337,83"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="613,72,337,72,337,67,613,66"/>
+<area shape="rect" id="Node000005" href="$dc/d0a/classCell2Fire.html#ad80754c3229512c88f0346d813c6f632" title="Updates the weather conditions during the simulation based on specified criteria." alt="" coords="392,107,579,132"/>
+<area shape="poly" id="edge5_Node000001_Node000005" title=" " alt="" coords="636,87,542,109,540,104,635,82"/>
+<area shape="rect" id="Node000003" href="$dc/d0a/classCell2Fire.html#a01ed2559f9d53e0ab5deb3cd83983c1a" title="Executes a single simulation step in the forest fire model." alt="" coords="5,57,121,83"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="405,24,293,32,170,47,111,60,110,55,169,42,292,27,404,19"/>
+<area shape="poly" id="edge4_Node000004_Node000003" title=" " alt="" coords="162,73,121,73,121,67,162,67"/>
+<area shape="poly" id="edge8_Node000005_Node000004" title=" " alt="" coords="412,106,316,85,317,80,413,101"/>
+<area shape="rect" id="Node000006" href="$dc/d0a/classCell2Fire.html#a31931e30982982168b82824efbb5b43a" title="Processes incoming fire messages to determine the ignition and progression of fire in cells." alt="" coords="169,107,344,132"/>
+<area shape="poly" id="edge6_Node000005_Node000006" title=" " alt="" coords="378,122,344,122,344,117,378,117"/>
+<area shape="poly" id="edge7_Node000006_Node000003" title=" " alt="" coords="193,106,114,85,115,80,194,101"/>
+</map>

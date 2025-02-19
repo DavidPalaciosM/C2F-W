@@ -1,0 +1,7 @@
+<map id="Cells::ros_distr_V2" name="Cells::ros_distr_V2">
+<area shape="rect" id="Node000001" title="Distributes the Rate of Spread (ROS) across the cell&#39;s neighbors based on fire direction and ellipse ..." alt="" coords="220,31,363,56"/>
+<area shape="rect" id="Node000002" href="$d4/dcd/classCells.html#a5b2bb9ec579bd5806e4ac9e5bad46d1f" title="Manage&#39;s the cell&#39;s response to being reached by fire." alt="" coords="19,5,158,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="206,35,158,29,159,24,207,30"/>
+<area shape="rect" id="Node000003" href="$d4/dcd/classCells.html#a20d450b1f32611d07767a92a6b58816a" title=" " alt="" coords="5,55,172,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="206,56,173,60,172,55,206,51"/>
+</map>
