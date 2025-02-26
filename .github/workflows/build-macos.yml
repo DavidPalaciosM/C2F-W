@@ -14,58 +14,94 @@ jobs:
   build:
     strategy:
       matrix:
-        runner: ["macOS-13", "macOS-14"]
+        runner: [ "macOS-13", "macOS-14" ]
     runs-on: ${{ matrix.runner }}
 
     steps:
-    - name: Checkout Code
-      uses: actions/checkout@v4
+      - name: Checkout Code
+        uses: actions/checkout@v4
 
-    - name: Check Runner
-      run: |
-        # arch
-        # echo "runner: ${{ matrix.runner }}.$(arch).$(uname -m)"
-        # mayor version: sw_vers -productVersion | cut -d '.' -f 1
-        # Darwin : uname -s
-        echo "suffix="$(uname -s).${{ matrix.runner }}.$(arch)"" >> $GITHUB_ENV
-        brew config
+      - name: Check Runner
+        run: |
+          # arch
+          # echo "runner: ${{ matrix.runner }}.$(arch).$(uname -m)"
+          # mayor version: sw_vers -productVersion | cut -d '.' -f 1
+          # Darwin : uname -s
+          echo "suffix="$(uname -s).${{ matrix.runner }}.$(arch)"" >> $GITHUB_ENV
+          brew config
 
-    - name: Install Dependencies
-      run: |
-        brew install gcc@12 libomp eigen boost libtiff # llvm ?
+      - name: Install Dependencies
+        run: |
+          brew install gcc@12 libomp eigen boost libtiff catch2 # llvm ?
 
-    - name: Build
-      run: |
-        cd Cell2Fire
-        make clean
-        make -f makefile.macos
-        otool -L Cell2Fire > otool_${{ env.suffix }}.txt
-        mv Cell2Fire Cell2Fire_${{ env.suffix }}
+      - name: Build
+        run: |
+          cd Cell2Fire
+          make clean
+          make -f makefile.macos
+          otool -L Cell2Fire > otool_${{ env.suffix }}.txt
+          mv Cell2Fire Cell2Fire_${{ env.suffix }}
 
-    - name: Upload
-      uses: actions/upload-artifact@v4
-      with:
-        name: binaries_${{ env.suffix }}
-        path: |
-          Cell2Fire/otool_${{ env.suffix }}.txt
-          Cell2Fire/Cell2Fire_${{ env.suffix }}
+      - name: Upload
+        uses: actions/upload-artifact@v4
+        with:
+          name: binaries_${{ env.suffix }}
+          path: |
+            Cell2Fire/otool_${{ env.suffix }}.txt
+            Cell2Fire/Cell2Fire_${{ env.suffix }}
 
-    - name: Install Static Dependencies
-      run: |
-        brew install gcc@12 libomp eigen boost libtiff jpeg-turbo xz zstd zlib 
+      - name: Install Static Dependencies
+        run: |
+          brew install gcc@12 libomp eigen boost libtiff jpeg-turbo xz zstd zlib catch2
 
-    - name: Build Static
-      run: |
-        cd Cell2Fire
-        make clean
-        make -f makefile.macos-static
-        otool -L Cell2Fire > otool_${{ env.suffix }}-static.txt
-        mv Cell2Fire Cell2Fire_${{ env.suffix }}-static
+      - name: Build Static
+        run: |
+          cd Cell2Fire
+          make clean
+          make -f makefile.macos-static
+          otool -L Cell2Fire > otool_${{ env.suffix }}-static.txt
+          mv Cell2Fire Cell2Fire_${{ env.suffix }}-static
 
-    - name: Upload Static
-      uses: actions/upload-artifact@v4
-      with:
-        name: binaries_${{ env.suffix }}-static
-        path: |
-          Cell2Fire/otool_${{ env.suffix }}-static.txt
-          Cell2Fire/Cell2Fire_${{ env.suffix }}-static
+      - name: Upload Static
+        uses: actions/upload-artifact@v4
+        with:
+          name: binaries_${{ env.suffix }}-static
+          path: |
+            Cell2Fire/otool_${{ env.suffix }}-static.txt
+            Cell2Fire/Cell2Fire_${{ env.suffix }}-static
+  test:
+    needs: build
+    strategy:
+      matrix:
+        runner: [ "macOS-13", "macOS-14" ]
+    runs-on: ${{ matrix.runner }}
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Install Dependencies
+        run: |
+          brew install gcc@12 libomp eigen boost libtiff catch2
+
+      - name: Download Artifacts
+        uses: actions/download-artifact@v4
+        with:
+          pattern: binaries${{ env.SUFFIX }}
+          path: Cell2Fire
+          merge-multiple: true
+
+      - name: chmod
+        run: |
+          ls Cell2Fire
+          chmod +x Cell2Fire/Cell2Fire*
+
+      - name: Unit Test
+        run: |
+          cd Cell2Fire
+          make -f makefile.macos tests
+
+      - name: Bash Test
+        run: |
+          cd test
+          bash test.sh ${{ env.SUFFIX }}

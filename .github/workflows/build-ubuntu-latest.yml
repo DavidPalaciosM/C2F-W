@@ -15,48 +15,53 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout Code
-      uses: actions/checkout@v4
+      - name: Checkout Code
+        uses: actions/checkout@v4
 
-    - name: Install Dependencies
-      run: |
-        sudo apt update
-        sudo apt install -y g++-12 libboost-all-dev libeigen3-dev libtiff-dev
+      - name: Install Dependencies
+        run: |
+          sudo apt update
+          sudo apt install -y g++-12 libboost-all-dev libeigen3-dev libtiff-dev catch2
 
-    - name: Check Packages Versions
-      run: |
-        dpkg-query -W -f='${binary:Package} ${Version}\n' g++-12 libboost-all-dev libeigen3-dev libtiff-dev > new_pkgs_ubuntu.txt
-        if [ -n "$(diff new_pkgs_ubuntu.txt pkgs_ubuntu.txt)" ]; then
-          echo "::warning:: apt packages versions diff! $(diff new_pkgs_ubuntu.txt pkgs_ubuntu.txt)"
-          diff_output=$(diff --side-by-side --suppress-common-lines new_pkgs_ubuntu.txt pkgs_ubuntu.txt || true)
-          echo "$diff_output" | while IFS= read -r line; do
-            echo "$line"
-          done
-        fi
+      - name: Check Packages Versions
+        run: |
+          dpkg-query -W -f='${binary:Package} ${Version}\n' g++-12 libboost-all-dev libeigen3-dev libtiff-dev catch2 > new_pkgs_ubuntu.txt
+          if [ -n "$(diff new_pkgs_ubuntu.txt pkgs_ubuntu.txt)" ]; then
+            echo "::warning:: apt packages versions diff! $(diff new_pkgs_ubuntu.txt pkgs_ubuntu.txt)"
+            diff_output=$(diff --side-by-side --suppress-common-lines new_pkgs_ubuntu.txt pkgs_ubuntu.txt || true)
+            echo "$diff_output" | while IFS= read -r line; do
+              echo "$line"
+            done
+          fi
 
-    - name: Get Environment
-      id: get_env
-      run: |
-        DISTRIBUTION=$( lsb_release --short --id 2>/dev/null )
-        CODENAME=$( lsb_release --short --codename 2>/dev/null )
-        MACHINE=$( uname --machine 2>/dev/null )
-        echo "SUFFIX=".${DISTRIBUTION}.${CODENAME}.${MACHINE}"" >> $GITHUB_ENV
+      - name: Get Environment
+        id: get_env
+        run: |
+          DISTRIBUTION=$( lsb_release --short --id 2>/dev/null )
+          CODENAME=$( lsb_release --short --codename 2>/dev/null )
+          MACHINE=$( uname --machine 2>/dev/null )
+          echo "SUFFIX=".${DISTRIBUTION}.${CODENAME}.${MACHINE}"" >> $GITHUB_ENV
 
-    - name: Build
-      run: |
-        cd Cell2Fire
-        make clean
-        make
-        ldd Cell2Fire
-        mv Cell2Fire Cell2Fire${{ env.SUFFIX }}
+      - name: Build
+        run: |
+          cd Cell2Fire
+          make clean
+          make
+          ldd Cell2Fire
+          mv Cell2Fire Cell2Fire${{ env.SUFFIX }}
 
-    - name: Test
-      run: |
-        cd test
-        bash test.sh ${{ env.SUFFIX }}
+      - name: Unit Test
+        run: |
+          cd Cell2Fire
+          make tests
 
-    - name: Upload
-      uses: actions/upload-artifact@v4
-      with:
-        name: binaries${{ env.SUFFIX }}
-        path: Cell2Fire/Cell2Fire${{ env.SUFFIX }}
+      - name: Bash Test
+        run: |
+          cd test
+          bash test.sh ${{ env.SUFFIX }}
+
+      - name: Upload
+        uses: actions/upload-artifact@v4
+        with:
+          name: binaries${{ env.SUFFIX }}
+          path: Cell2Fire/Cell2Fire${{ env.SUFFIX }}

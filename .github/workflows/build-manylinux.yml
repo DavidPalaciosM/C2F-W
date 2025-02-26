@@ -87,7 +87,20 @@ jobs:
       - name: Install Base Dependencies
         run: |
           apt update
-          apt install -y unzip lsb-release
+          apt install -y unzip g++-12 make lsb-release libeigen3-dev curl
+
+      - name: Cache Catch2 header
+        uses: actions/cache@v3
+        with:
+          path: catch.hpp
+          key: ${{ runner.os }}-catch2
+
+      - name: Download Catch2 header
+        run: |
+          if [ ! -f test/unit_tests/catch2/catch.hpp ]; then
+            mkdir  /usr/include/catch2
+            curl -L https://raw.githubusercontent.com/catchorg/Catch2/v2.x/single_include/catch2/catch.hpp -o /usr/include/catch2/catch.hpp
+          fi
 
       - name: Download Artifacts
         uses: actions/download-artifact@v4
@@ -99,6 +112,11 @@ jobs:
       - name: chmod
         run: |
           chmod +x Cell2Fire/Cell2Fire*
+
+      - name: Unit Test
+        run: |
+          cd Cell2Fire
+          make tests
 
       - name: Test ManyLinux
         run: |

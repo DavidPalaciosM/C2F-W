@@ -16,49 +16,49 @@ jobs:
     container: debian:stable-slim
 
     steps:
-    - name: Checkout Code
-      uses: actions/checkout@v4
+      - name: Checkout Code
+        uses: actions/checkout@v4
 
-    - name: Install Dependencies
-      run: |
-        apt update
-        apt install -y g++-12 make lsb-release unzip libboost-all-dev libeigen3-dev libtiff-dev
+      - name: Install Dependencies
+        run: |
+          apt update
+          apt install -y g++-12 make lsb-release unzip libboost-all-dev libeigen3-dev libtiff-dev catch2
 
-    - name: Check Packages Versions
-      if: false
-      run: |
-        dpkg-query -W -f='${binary:Package} ${Version}\n' g++-12 libboost-all-dev libeigen3-dev libtiff-dev > new_pkgs_debian.txt
-        if [ -n "$(diff new_pkgs_debian.txt pkgs_debian.txt)" ]; then
-          echo "::warning:: apt packages versions diff! $(diff new_pkgs_debian.txt pkgs_debian.txt)"
-          diff_output=$(diff --side-by-side --suppress-common-lines new_pkgs_debian.txt pkgs_debian.txt || true)
-          echo "$diff_output" | while IFS= read -r line; do
-            echo "$line"
-          done
-        fi
+      - name: Check Packages Versions
+        if: false
+        run: |
+          dpkg-query -W -f='${binary:Package} ${Version}\n' g++-12 libboost-all-dev libeigen3-dev libtiff-dev catch2 > new_pkgs_debian.txt
+          if [ -n "$(diff new_pkgs_debian.txt pkgs_debian.txt)" ]; then
+            echo "::warning:: apt packages versions diff! $(diff new_pkgs_debian.txt pkgs_debian.txt)"
+            diff_output=$(diff --side-by-side --suppress-common-lines new_pkgs_debian.txt pkgs_debian.txt || true)
+            echo "$diff_output" | while IFS= read -r line; do
+              echo "$line"
+            done
+          fi
 
-    - name: Get Environment
-      id: get_env
-      run: |
-        DISTRIBUTION=$( lsb_release --short --id 2>/dev/null )
-        CODENAME=$( lsb_release --short --codename 2>/dev/null )
-        MACHINE=$( uname --machine 2>/dev/null )
-        echo "SUFFIX=".${DISTRIBUTION}.${CODENAME}.${MACHINE}"" >> $GITHUB_ENV
+      - name: Get Environment
+        id: get_env
+        run: |
+          DISTRIBUTION=$( lsb_release --short --id 2>/dev/null )
+          CODENAME=$( lsb_release --short --codename 2>/dev/null )
+          MACHINE=$( uname --machine 2>/dev/null )
+          echo "SUFFIX=".${DISTRIBUTION}.${CODENAME}.${MACHINE}"" >> $GITHUB_ENV
 
-    - name: Build
-      run: |
-        cd Cell2Fire
-        make clean
-        make
-        ldd Cell2Fire > ldd${{ env.SUFFIX }}.txt
-        mv Cell2Fire Cell2Fire${{ env.SUFFIX }}
+      - name: Build
+        run: |
+          cd Cell2Fire
+          make clean
+          make
+          ldd Cell2Fire > ldd${{ env.SUFFIX }}.txt
+          mv Cell2Fire Cell2Fire${{ env.SUFFIX }}
 
-    - name: Upload
-      uses: actions/upload-artifact@v4
-      with:
-        name: binaries${{ env.SUFFIX }}
-        path: |
-          Cell2Fire/ldd${{ env.SUFFIX }}.txt
-          Cell2Fire/Cell2Fire${{ env.SUFFIX }}
+      - name: Upload
+        uses: actions/upload-artifact@v4
+        with:
+          name: binaries${{ env.SUFFIX }}
+          path: |
+            Cell2Fire/ldd${{ env.SUFFIX }}.txt
+            Cell2Fire/Cell2Fire${{ env.SUFFIX }}
 
   test:
     needs: build
@@ -66,36 +66,54 @@ jobs:
     container: debian:stable-slim
 
     steps:
-    - name: Checkout Code
-      uses: actions/checkout@v4
+      - name: Checkout Code
+        uses: actions/checkout@v4
 
-    - name: Install Dependencies
-      run: |
-        apt update
-        apt install -y lsb-release unzip libtiff6 libgomp1
-        # apt install -y g++-12 make lsb-release unzip libboost-all-dev libeigen3-dev libtiff-dev
+      - name: Install Dependencies
+        run: |
+          apt update
+          apt install -y g++-12 make lsb-release unzip libtiff6 libgomp1 libeigen3-dev curl catch2
+          # apt install -y g++-12 make lsb-release unzip libboost-all-dev libeigen3-dev libtiff-dev catch2
+      #
+      #      - name: Cache Catch2 header
+      #        uses: actions/cache@v3
+      #        with:
+      #          path: catch.hpp
+      #          key: ${{ runner.os }}-catch2
 
-    - name: Get Environment
-      id: get_env
-      run: |
-        DISTRIBUTION=$( lsb_release --short --id 2>/dev/null )
-        CODENAME=$( lsb_release --short --codename 2>/dev/null )
-        MACHINE=$( uname --machine 2>/dev/null )
-        echo "SUFFIX=".${DISTRIBUTION}.${CODENAME}.${MACHINE}"" >> $GITHUB_ENV
+      #      - name: Download Catch2 header
+      #        run: |
+      #          if [ ! -f test/unit_tests/catch2/catch.hpp ]; then
+      #            mkdir  /usr/include/catch2
+      #            curl -L https://raw.githubusercontent.com/catchorg/Catch2/v2.x/single_include/catch2/catch.hpp -o /usr/include/catch2/catch.hpp
+      #          fi
 
-    - name: Download Artifacts
-      uses: actions/download-artifact@v4
-      with:
-        pattern: binaries${{ env.SUFFIX }}
-        path: Cell2Fire
-        merge-multiple: true
+      - name: Get Environment
+        id: get_env
+        run: |
+          DISTRIBUTION=$( lsb_release --short --id 2>/dev/null )
+          CODENAME=$( lsb_release --short --codename 2>/dev/null )
+          MACHINE=$( uname --machine 2>/dev/null )
+          echo "SUFFIX=".${DISTRIBUTION}.${CODENAME}.${MACHINE}"" >> $GITHUB_ENV
 
-    - name: chmod
-      run: |
-        ls Cell2Fire
-        chmod +x Cell2Fire/Cell2Fire*
+      - name: Download Artifacts
+        uses: actions/download-artifact@v4
+        with:
+          pattern: binaries${{ env.SUFFIX }}
+          path: Cell2Fire
+          merge-multiple: true
 
-    - name: Test
-      run: |
-        cd test
-        bash test.sh ${{ env.SUFFIX }}
+      - name: chmod
+        run: |
+          ls Cell2Fire
+          chmod +x Cell2Fire/Cell2Fire*
+
+      - name: Unit Test
+        run: |
+          cd Cell2Fire
+          make tests
+
+      - name: Bash Test
+        run: |
+          cd test
+          bash test.sh ${{ env.SUFFIX }}

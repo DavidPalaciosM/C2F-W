@@ -17,7 +17,7 @@ jobs:
       matrix:
         # system: ["rockylinux:8.9-minimal", "fedora:latest", ]
         #, "ubuntu:focal" E: Unable to locate package g++-12
-        system: ["debian:stable-slim", "ubuntu:focal", "ubuntu:jammy", "ubuntu:latest"]
+        system: [ "debian:stable-slim", "ubuntu:focal", "ubuntu:jammy", "ubuntu:latest" ]
 
     container: ${{ matrix.system }}
 
@@ -27,28 +27,28 @@ jobs:
           # g++ --version | awk 'NR==1 {print $3}' | cut -d. -f1
           # if [ "${{ matrix.system }}" = "debian:stable-slim" ]; then
           apt update
-          apt install -y g++ make lsb-release unzip libboost-all-dev libeigen3-dev libtiff-dev
-          # apt install -y g++-12 make lsb-release unzip libboost-all-dev libeigen3-dev libtiff-dev
+          apt install -y g++ make lsb-release unzip libboost-all-dev libeigen3-dev libtiff-dev catch2
+          # apt install -y g++-12 make lsb-release unzip libboost-all-dev libeigen3-dev libtiff-dev catch2
           # elif [ "${{ matrix.system }}" = "fedora:latest" ]; then
           #   dnf check-update
-          #   dnf install -y gcc-c++ make lsb-release unzip diffutils boost-devel eigen3-devel libtiff-devel
+          #   dnf install -y gcc-c++ make lsb-release unzip diffutils boost-devel eigen3-devel libtiff-devel catch2
           # elif [ "${{ matrix.system }}" = "rockylinux:8.9-minimal" ]; then
           #   microdnf install -y epel-release
           #   microdnf install -y 'dnf-command(config-manager)'
           #   microdnf config-manager --set-enabled crb
           #   microdnf config-manager --set-enabled devel
-          #   microdnf install -y gcc-c++ make redhat-lsb-core unzip diffutils tar boost-devel eigen3-devel libtiff-devel
+          #   microdnf install -y gcc-c++ make redhat-lsb-core unzip diffutils tar boost-devel eigen3-devel libtiff-devel catch2
           # fi
 
       - name: Checkout Code
         uses: actions/checkout@v4
-  
+
       - name: Check Packages Versions
         run: |
-          dpkg-query -W -f='${binary:Package} ${Version}\n' g++ libboost-all-dev libeigen3-dev libtiff-dev > new_pkgs.txt
+          dpkg-query -W -f='${binary:Package} ${Version}\n' g++ libboost-all-dev libeigen3-dev libtiff-dev catch2 > new_pkgs.txt
           cat new_pkgs.txt
           # if [ "${{ matrix.system }}" = "debian:stable-slim" ]; then
-          #   dpkg-query -W -f='${binary:Package} ${Version}\n' g++-12 libboost-all-dev libeigen3-dev libtiff-dev > new_pkgs_debian.txt
+          #   dpkg-query -W -f='${binary:Package} ${Version}\n' g++-12 libboost-all-dev libeigen3-dev libtiff-dev catch2 > new_pkgs_debian.txt
           #   if [ -n "$(diff new_pkgs_debian.txt pkgs_debian.txt)" ]; then
           #     echo "::warning:: apt packages versions diff! $(diff new_pkgs_debian.txt pkgs_debian.txt)"
           #     diff_output=$(diff --side-by-side --suppress-common-lines new_pkgs_debian.txt pkgs_debian.txt || true)
@@ -99,7 +99,12 @@ jobs:
           ldd Cell2Fire
           mv Cell2Fire Cell2Fire${{ env.SUFFIX }}
 
-      - name: Test
+      - name: Unit Test
+        run: |
+          cd Cell2Fire
+          make tests
+
+      - name: Bash Test
         continue-on-error: true
         run: |
           cd test
