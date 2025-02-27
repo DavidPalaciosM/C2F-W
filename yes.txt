@@ -1,1 +1,2 @@
 fdo yes\n
+mati yes\n
