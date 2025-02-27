@@ -1,2 +1,3 @@
 fdo yes\n
 mati yes\n
+new line
