@@ -1,1 +1,2 @@
 fdo yes\n
+'fdo yes\n'
