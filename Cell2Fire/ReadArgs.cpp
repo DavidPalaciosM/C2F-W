@@ -104,6 +104,7 @@ parseArgs(int argc, char* argv[], arguments* args_ptr)
     bool out_stats = false;
     bool bbo_tuning = false;
     bool allow_cros = false;
+    bool co2eq = false;
 
     //--out-messages
     if (cmdOptionExists(argv, argv + argc, "--output-messages"))
@@ -149,6 +150,12 @@ parseArgs(int argc, char* argv[], arguments* args_ptr)
         out_surf_consumption = true;
         printf("OutSurfaceConsumption: %d \n", out_surf_consumption);
     }
+
+    //--co2
+	if (cmdOptionExists(argv, argv + argc, "--co2eq")) {
+		co2eq = true;
+		printf("Co2-eq: %d \n", co2eq);
+	}
 
     //--trajectories
     // if (cmdOptionExists(argv, argv + argc, "--trajectories")) {
@@ -595,6 +602,7 @@ parseArgs(int argc, char* argv[], arguments* args_ptr)
     args_ptr->Stats = out_stats;
     args_ptr->BBOTuning = bbo_tuning;
     args_ptr->AllowCROS = allow_cros;
+    args_ptr->Co2eq = co2eq;
 }
 
 void
@@ -648,6 +656,7 @@ printArgs(arguments args)
     std::cout << "OutCrown: " << args.OutCrown << std::endl;
     std::cout << "OutCrownConsumption: " << args.OutCrownConsumption << std::endl;
     std::cout << "OutSurfConsumption: " << args.OutSurfConsumption << std::endl;
+    std::cout << "Co2-eq: " << args.Co2eq << std::endl;
 
     std::cout << "TotalYears: " << args.TotalYears << std::endl;
     std::cout << "TotalSims: " << args.TotalSims << std::endl;

@@ -189,6 +189,40 @@ CSVReader::getData()
     return dataList;
 }
 
+
+std::unordered_map<int, int> CSVReader::getDataIg() {
+    std::string extension = "";  // Initialize extension (if needed)
+    this->fileName = this->fileName + extension;
+    std::cout << "Reading file: " << this->fileName << '\n';
+
+    std::ifstream file(this->fileName);
+    if (!file.is_open()) {
+        std::cerr << "Error: Unable to open file!" << std::endl;
+        return {};  // Return empty map if file can't be opened
+    }
+
+    std::unordered_map<int, int> dataList;
+    std::string line;
+
+    while (getline(file, line)) {
+        std::vector<std::string> vec;
+        boost::algorithm::split(vec, line, boost::is_any_of(this->delimeter));
+
+        if (vec.size() < 2) continue;  // Ensure at least two columns exist
+
+        try {
+            int key = std::stoi(vec[0]);  // Convert first column to int (key)
+            int value = std::stoi(vec[1]); // Convert second column to int (value)
+            dataList[key] = value; // Store in unordered_map
+        } catch (const std::exception &e) {
+            std::cerr << "Skipping line (invalid data): " << line << '\n';
+        }
+    }
+
+    file.close();
+    return dataList;
+}
+
 /*
  * Prints data to screen inside the DF obtained from the CSV file
  */

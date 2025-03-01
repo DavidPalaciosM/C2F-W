@@ -733,8 +733,8 @@ Cells::manageFire(int period,
                 Intensities[nb - 1] = metrics.sfi;
                 crownFraction[this->realId - 1] = mainstruct.cfb;
                 crownFraction[nb - 1] = metrics.cfb;
-                surfFraction[this->realId] = mainstruct.sfc;
-                surfFraction[nb] = metrics.sfc;
+                surfFraction[this->realId - 1] = mainstruct.sfc;
+                surfFraction[nb - 1] = metrics.sfc;
                 SurfaceFlameLengths[this->realId - 1] = mainstruct.fl;
                 SurfaceFlameLengths[nb - 1] = metrics.fl;
                 if ((args->AllowCROS) && (args->Simulator == "S"))
@@ -1057,8 +1057,8 @@ Cells::manageFireBBO(int period,
                 Intensities[nb - 1] = metrics.sfi;
                 crownFraction[this->realId - 1] = mainstruct.cfb;
                 crownFraction[nb - 1] = metrics.cfb;
-                surfFraction[this->realId] = mainstruct.sfc;
-                surfFraction[nb] = metrics.sfc;
+                surfFraction[this->realId - 1] = mainstruct.sfc;
+                surfFraction[nb - 1] = metrics.sfc;
                 FlameLengths[this->realId - 1] = mainstruct.fl;
                 FlameLengths[nb - 1] = metrics.fl;
                 // cannot mutate ROSangleDir during iteration.. we do it like 10
